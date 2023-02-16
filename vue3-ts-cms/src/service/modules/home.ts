@@ -34,17 +34,26 @@ const config = {
     }
   }
 }
+interface HomeData {
+  data: any
+  status: number
+  success: boolean
+}
 const yyRequest2 = new YYRequest(config)
-yyRequest2.request({
-  url: '',
-  headers,
-  interceptors: {
-    //必须得都实现吗？不可以只实现其中的某些吗
-    requestSuccessFn: (config) => config,
-    requestFailFn(err) {},
-    responseSuccessFn: (config) => config,
-    responseFailFn(err) {}
-  }
-})
+yyRequest2
+  .request<HomeData>({
+    url: '',
+    headers,
+    interceptors: {
+      //必须得都实现吗？不可以只实现其中的某些吗
+      requestSuccessFn: (config) => config,
+      requestFailFn(err) {},
+      responseSuccessFn: (config) => config,
+      responseFailFn(err) {}
+    }
+  })
+  .then((res) => {
+    console.log(res.data)
+  })
 export default yyRequest2
 //返回的是异步请求，在外使用的时候通过.then获取返回值

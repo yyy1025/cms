@@ -2,6 +2,7 @@ import axios from 'axios'
 import AxiosHeaders from 'axios'
 import type {
   AxiosInstance,
+  AxiosResponse,
   InternalAxiosRequestConfig,
   AxiosRequestHeaders
 } from 'axios'
@@ -56,13 +57,13 @@ class YYRequest {
 
   //封装网络请求的方法
   //request方法
-  request(config: YYRequestConfig) {
+  request<T = any>(config: YYRequestConfig) {
     if (config.interceptors?.requestSuccessFn) {
       //请求成功有值的话,调用拦截器执行成功的回调，更新config
       config = config.interceptors.requestSuccessFn(config)
     }
-    return this._instance.request(config)
-    // return new Promise((resolve, reject) => {
+    // return this._instance.request(config)
+    // return new Promise<AxiosResponse>((resolve, reject) => {
     //   this._instance.request(config).then(
     //     (res) => {
     //       resolve(res.data)
@@ -72,6 +73,13 @@ class YYRequest {
     //     }
     //   )
     // })
+    return new Promise<T>((resolve, reject) => {
+      //any是参数类型，T是返回值类型
+      this._instance.request<any, T>(config).then(
+        (res) => resolve(res),
+        (err) => reject(err)
+      )
+    })
   }
   //get方法
   get(config: YYRequestConfig) {
