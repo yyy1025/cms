@@ -1,53 +1,27 @@
-<script setup lang="ts">
-import HelloWorld from "./components/HelloWorld.vue";
-import TheWelcome from "./components/TheWelcome.vue";
-</script>
-
 <template>
-  <header>
-    <img
-      alt="Vue logo"
-      class="logo"
-      src="./assets/logo.svg"
-      width="125"
-      height="125"
-    />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+  <div class="app">
+    <h1>app</h1>
+    <div>
+      <router-link to="/main">主页</router-link>
+      <router-link to="/login">登录</router-link>
+      <router-view></router-view>
+      <!-- 可以直接拿到store里面的东西 -->
+      <div>{{ counterStore.counter }}</div>
+      <!-- 也可以通过get得到store里面的东西 -->
+      <div>{{ counterStore.doubleCounter }}</div>
     </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-}
+<script lang="ts" setup>
+//使用store
+// import useCounterStore from "@/store/counter"//不能发现这个文件
+//useCounterStore是什么类型的数据呢，是个方法，defineStore得到的是一个方法
+import useCounterStore from '../src/store/counter'
+const counterStore = useCounterStore()
+</script>
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+<style lang= "less" scoped>
+.app {
 }
 </style>
